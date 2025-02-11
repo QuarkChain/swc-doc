@@ -1,6 +1,14 @@
-# Run a Super World Computer node
+# Run a Super World Computer(SWC) node
 
-This guide will help you get a Super World Computer node up and running.
+This guide will help you get SWC node up and running.
+
+## Hardware requirements
+
+Hardware requirements for SWC testnet nodes can vary depending on the type of node you plan to run. Archive nodes generally require significantly more resources than full nodes. Below are suggested minimum hardware requirements for each type of node.
+
+- 8GB RAM
+- 60 GB SSD (full node) or 200 GB SSD (archive node)
+- Reasonably modern CPU
 
 ## Software dependencies
 
@@ -30,6 +38,10 @@ This guide will help you get a Super World Computer node up and running.
 
 2. Setup `op-geth`:
 
+> * Set `--syncmode=execution-layer` on `op-node` if you don't set `--syncmode=full` here on op-geth. 
+> * For archive nodes, set `--syncmode=full` and `--gcmode=archive` on `op-geth`.
+> * The default settings are for full nodes with snap sync.
+
     ```bash
         # assume optimism and op-geth repo are located at ./optimism and ./op-geth
 
@@ -42,10 +54,15 @@ This guide will help you get a Super World Computer node up and running.
 
         # We don't specify `--rollup.sequencerhttp` since it's for testing blob archiver only.
         # The rpc port is the default one: 8545.
-        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,debug,eth,txpool,net,engine   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=debug,eth,txpool,net,engine   --syncmode=full   --gcmode=archive   --nodiscover   --maxpeers=0   --networkid=3335   --authrpc.vhosts="*"   --authrpc.addr=0.0.0.0   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip=true
+        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,debug,eth,txpool,net,engine   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=debug,eth,txpool,net,engine  --networkid=3335   --authrpc.vhosts="*"   --authrpc.addr=0.0.0.0   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip=true
     ```
 
 3. Setup `op-node`:
+
+> ⚠️ The `op-node` RPC should not be exposed publicly. If left exposed, it could accidentally expose admin controls to the public internet. 
+
+> Sync mode is set to `--syncmode=execution-layer` to enable snap sync.
+
     ```bash
         # assume optimism and op-geth repo are located at ./optimism and ./op-geth
         # copy jwt.txt from the op-geth directory above to optimism/op-node
@@ -61,7 +78,7 @@ This guide will help you get a Super World Computer node up and running.
         mkdir safedb
         # Ensure to replace --p2p.static with the sequencer's address.
         # Note: p2p is enabled for unsafe block.
-        ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./beta_testnet_rollup.json   --rpc.addr=0.0.0.0   --rpc.port=8547   --p2p.static=/ip4/5.9.87.214/tcp/9003/p2p/16Uiu2HAm2w9ZsnP58zzGpPXGuCH8j6w9ecwA3uwXhkXxJniJEbUX --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645 --safedb.path=safedb
+        ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./beta_testnet_rollup.json  --rpc.port=8547   --p2p.static=/ip4/5.9.87.214/tcp/9003/p2p/16Uiu2HAm2w9ZsnP58zzGpPXGuCH8j6w9ecwA3uwXhkXxJniJEbUX --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645 --safedb.path=safedb --syncmode=execution-layer
     ```
 
 ---
