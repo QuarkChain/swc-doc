@@ -38,9 +38,7 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 
 2. Setup `op-geth`:
 
-> * Set `--syncmode=execution-layer` on `op-node` if you don't set `--syncmode=full` here on op-geth. 
-> * For archive nodes, set `--syncmode=full` and `--gcmode=archive` on `op-geth`.
-> * The default settings are for full nodes with snap sync.
+    > The default settings are for full nodes with snap sync. For configurations related to full sync or archive nodes, please refer to the [Sync modes](#sync-modes) section.
 
     ```bash
         # assume optimism and op-geth repo are located at ./optimism and ./op-geth
@@ -59,9 +57,9 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 
 3. Setup `op-node`:
 
-> ⚠️ The `op-node` RPC should not be exposed publicly. If left exposed, it could accidentally expose admin controls to the public internet. 
+    > ⚠️ The `op-node` RPC should not be exposed publicly. If left exposed, it could accidentally expose admin controls to the public internet. 
 
-> Sync mode is set to `--syncmode=execution-layer` to enable snap sync.
+    > Sync mode is set to `--syncmode=execution-layer` to enable snap sync.
 
     ```bash
         # assume optimism and op-geth repo are located at ./optimism and ./op-geth
@@ -102,6 +100,8 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 
 2. Setup `op-geth`:
 
+    > The default settings are for full nodes with snap sync. For configurations related to full sync or archive nodes, please refer to the [Sync modes](#sync-modes) section.
+
     ```bash
         # assume optimism and op-geth repo are located at ./optimism and ./op-geth
 
@@ -115,7 +115,7 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 
         # We don't specify `--rollup.sequencerhttp` since it's for testing blob archiver only.
         # The rpc port is the default one: 8545.
-        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,debug,eth,txpool,net,engine   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=debug,eth,txpool,net,engine   --syncmode=full   --gcmode=archive   --nodiscover   --maxpeers=0   --networkid=42069   --authrpc.vhosts="*"   --authrpc.addr=0.0.0.0   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip=true --enablel2blob
+        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,debug,eth,txpool,net,engine   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=debug,eth,txpool,net,engine  --networkid=42069   --authrpc.vhosts="*"   --authrpc.addr=0.0.0.0   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip=true --enablel2blob
     ```
  
  3. Setup `op-node`:
@@ -133,8 +133,24 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 
         # Ensure to replace --p2p.static with the sequencer's address.
         # Note: p2p is enabled for unsafe block.
-         ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./devnet_rollup.json   --rpc.addr=0.0.0.0   --rpc.port=8547   --p2p.static=/ip4/65.109.20.29/tcp/9003/p2p/16Uiu2HAmP3KorAMS1DC5SdDEcNGwhMFKuoyvZzBSWXdqysZgrxQ7 --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645
+         ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./devnet_rollup.json  --rpc.port=8547   --p2p.static=/ip4/65.109.20.29/tcp/9003/p2p/16Uiu2HAmP3KorAMS1DC5SdDEcNGwhMFKuoyvZzBSWXdqysZgrxQ7 --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645
     ```
  
+## Sync modes
 
-    
+The execution layer (`op-geth`) supports two sync modes:  
+- **Snap sync** (default)  
+- **Full sync**  
+
+The consensus layer (`op-node`) also supports two sync modes:  
+- **Execution layer (EL) sync**: This is the recommended option. In this mode, `op-node` instructs `op-geth` to perform a snap sync. Once `op-geth` downloads the state at the tip, it switches to inserting blocks one by one.  
+- **Consensus layer (CL) sync** (default): This mode is ideal for decentralized developer groups requiring full chain verification, as `op-node` derives every L2 block from Ethereum.  
+
+Based on these options, the following configurations are available for running a node:
+
+|                     |`op-node`                                  | `op-geth`                                                               |
+|--                   |--                                         |--                                                                       |
+|Full nodes snap sync |`--syncmode=execution-layer (not default)` | `--syncmode=snap (default)`                                             |
+|Full nodes full sync |`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)`                                             |
+|Archive nodes EL sync|`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)` <br> `--gcmode=archive (not default)`   |
+|Archive Nodes CL sync|`--syncmode=consensus-layer (default)`     | `--syncmode=full (not default)` <br> `--gcmode=archive (not default)`   |
