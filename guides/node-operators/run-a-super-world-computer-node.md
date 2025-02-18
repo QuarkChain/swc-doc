@@ -19,6 +19,19 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
 | [make](https://linux.die.net/man/1/make)                      | `^3`     | `make --version`      |
 | [just](https://just.systems/man/en/packages.html)             | `^1.34`  | `just --version`      |
 
+## Sync modes
+
+The following configurations are available for running a node ([explanation](https://docs.optimism.io/operators/node-operators/management/snap-sync#enable-snap-sync-for-your-node)):
+
+|                        |`op-node`(CL)                                  | `op-geth`(EL)                       |
+|--                      |--                                         |--                               |
+|Full nodes EL snap sync |`--syncmode=execution-layer (not default)` | `--syncmode=snap (default)`     |
+|Full nodes EL full sync |`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)`                                             |
+|Full nodes CL sync      |`--syncmode=consensus-layer (default)`     | `--syncmode=full (not default)` |
+
+For archive nodes, please add `--gcmode=archive` to `op-geth`.
+
+
 ## Beta Testnet
 
 ### Steps
@@ -136,14 +149,3 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
          ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./devnet_rollup.json  --rpc.port=8547   --p2p.static=/ip4/65.109.20.29/tcp/9003/p2p/16Uiu2HAmP3KorAMS1DC5SdDEcNGwhMFKuoyvZzBSWXdqysZgrxQ7 --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645
     ```
  
-## Sync modes
-
-The following configurations are available for running a node ([explanation](https://docs.optimism.io/operators/node-operators/management/snap-sync#enable-snap-sync-for-your-node)):
-
-|                        |`op-node`(CL)                                  | `op-geth`(EL)                       |
-|--                      |--                                         |--                               |
-|Full nodes EL snap sync |`--syncmode=execution-layer (not default)` | `--syncmode=snap (default)`     |
-|Full nodes EL full sync |`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)`                                             |
-|Full nodes CL sync      |`--syncmode=consensus-layer (default)`     | `--syncmode=full (not default)` |
-
-For archive nodes, please add `--gcmode=archive` to `op-geth`.
