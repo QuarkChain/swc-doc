@@ -138,19 +138,12 @@ Hardware requirements for SWC testnet nodes can vary depending on the type of no
  
 ## Sync modes
 
-The execution layer (`op-geth`) supports two sync modes:  
-- **Snap sync** (default)  
-- **Full sync**  
+The following configurations are available for running a node ([explanation](https://docs.optimism.io/operators/node-operators/management/snap-sync#enable-snap-sync-for-your-node)):
 
-The consensus layer (`op-node`) also supports two sync modes:  
-- **Execution layer (EL) sync**: This is the recommended option. In this mode, `op-node` instructs `op-geth` to perform a snap sync. Once `op-geth` downloads the state at the tip, it switches to inserting blocks one by one.  
-- **Consensus layer (CL) sync** (default): This mode is ideal for decentralized developer groups requiring full chain verification, as `op-node` derives every L2 block from Ethereum.  
+|                        |`op-node`(CL)                                  | `op-geth`(EL)                       |
+|--                      |--                                         |--                               |
+|Full nodes EL snap sync |`--syncmode=execution-layer (not default)` | `--syncmode=snap (default)`     |
+|Full nodes EL full sync |`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)`                                             |
+|Full nodes CL sync      |`--syncmode=consensus-layer (default)`     | `--syncmode=full (not default)` |
 
-Based on these options, the following configurations are available for running a node:
-
-|                     |`op-node`                                  | `op-geth`                                                               |
-|--                   |--                                         |--                                                                       |
-|Full nodes snap sync |`--syncmode=execution-layer (not default)` | `--syncmode=snap (default)`                                             |
-|Full nodes full sync |`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)`                                             |
-|Archive nodes EL sync|`--syncmode=execution-layer (not default)` | `--syncmode=full (not default)` <br> `--gcmode=archive (not default)`   |
-|Archive Nodes CL sync|`--syncmode=consensus-layer (default)`     | `--syncmode=full (not default)` <br> `--gcmode=archive (not default)`   |
+For archive nodes, please add `--gcmode=archive` to `op-geth`.
