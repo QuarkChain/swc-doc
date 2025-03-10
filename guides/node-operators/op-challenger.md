@@ -29,8 +29,8 @@ DISPUTE_GAME_FACTORY_PROXY_ADDRESS=0x4b2215d682208b2a598cb04270f96562f5ab225f
 ```bash
 op-challenger/bin/op-challenger --l1-eth-rpc $L1_RPC_URL --l1-beacon $L1_BEACON_URL  --l2-eth-rpc $L2_RPC_URL --rollup-rpc $ROLLUP_RPC_URL  --datadir $DATADIR --cannon-server ./op-program/bin/op-program --cannon-bin ./cannon/bin/cannon --cannon-prestate $(realpath ./op-program/bin/prestate.bin.gz) --private-key $PRIVATE_KEY  --cannon-rollup-config $(realpath ./op-program/chainconfig/configs/3335-rollup.json)  --cannon-l2-genesis $(realpath ./op-program/chainconfig/configs/3335-genesis-l2.json)  --game-factory-address $DISPUTE_GAME_FACTORY_PROXY_ADDRESS --trace-type cannon,permissioned  --selective-claim-resolution
 ```
-> **`--selective-claim-resolution`** (default: `false`): Limits claim resolution to the configured private key's claimant.  
->    -  Enabled in the above command to save gas, as resolving claims fails for all but the first resolver.  
+> **`--selective-claim-resolution`** (default: `false`): Only resolve claims for the configured claimants.  
+>    - Enabled in the above command to save gas, as resolving claims fails for all but the first resolver.  Set `--additional-bond-claimants` to add other addresses to claim bonds for, in addition to the configured transaction sender.
 >    - At least one honest challenger should disable this to resolve malicious claims, as bad actors might won’t resolve their own dishonest claims. 
 
 ### 4.Test and debug challenger (optional)
