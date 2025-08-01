@@ -31,6 +31,67 @@ For full nodes, the following configurations are available ([explanation](https:
 
 For archive nodes, please add `--gcmode=archive` to `op-geth`.
 
+## Gamma Testnet
+
+### Steps
+
+1. Follow the following steps to build a node. The steps are basically the same as in [Optimism's documentation](https://docs.optimism.io/builders/node-operators/tutorials/node-from-source), the only difference is that here we use the `op-es` branch of both [our optimism fork](https://github.com/QuarkChain/optimism/tree/op-es) and [our op-geth fork](https://github.com/QuarkChain/op-geth/tree/op-es) instead.
+
+- 1.1 Build `op-geth`
+    ```bash
+    git clone -b op-es https://github.com/QuarkChain/op-geth.git
+    pushd op-geth && make geth && popd
+    ```
+- 1.2 Build `op-node`
+    ```bash
+    git clone -b op-es https://github.com/QuarkChain/optimism.git
+    pushd optimism && make op-node && popd
+    ```
+
+2. Setup `op-geth`:
+
+    > The default settings are for full nodes with snap sync. For configurations related to full sync or archive nodes, please refer to the [Sync modes](#sync-modes) section.
+
+    ```bash
+        # assume optimism and op-geth repo are located at ./optimism and ./op-geth
+
+        cd op-geth
+        # prepare gamma_testnet_genesis.json
+        curl -LO https://raw.githubusercontent.com/QuarkChain/pm/main/L2/assets/gamma_testnet_genesis.json
+        ./build/bin/geth init --datadir=datadir --state.scheme hash gamma_testnet_genesis.json
+
+        openssl rand -hex 32 > jwt.txt
+
+        # We don't specify `--rollup.sequencerhttp` since it's for testing blob archiver only.
+        # The rpc port is the default one: 8545.
+        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,eth,txpool,net   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=eth,txpool,net  --networkid=110011   --authrpc.vhosts="*"   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip=true --bootnodes enode://7c9422be3825257ac80f89968e7e6dd3f64608199640ae6cea07b59d2de57642568908974ed4327f092728a64c7bdc04130ebbeaa607b6a1b95d0d25e9c5330b@65.109.69.90:30303
+    ```
+
+3. Setup `op-node`:
+
+    > ⚠️ The `op-node` admin RPC should not be exposed publicly. If left exposed, it could accidentally expose admin controls to the public internet. 
+
+    > Sync mode is set to `--syncmode=execution-layer` to enable snap sync.
+
+    ```bash
+        # assume optimism and op-geth repo are located at ./optimism and ./op-geth
+        # copy jwt.txt from the op-geth directory above to optimism/op-node
+        cp op-geth/jwt.txt optimism/op-node 
+        cd optimism/op-node
+
+        export L1_RPC_KIND=basic
+        export L1_RPC_URL=http://65.108.230.142:8545
+        export L1_BEACON_URL=http://65.108.230.142:3500
+        # prepare gamma_testnet_rollup.json
+        curl -LO https://raw.githubusercontent.com/QuarkChain/pm/main/L2/assets/gamma_testnet_rollup.json
+
+        mkdir safedb
+        # Ensure to replace --p2p.static with the sequencer's address.
+        # Note: p2p is enabled for unsafe block.
+        ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./gamma_testnet_rollup.json  --rpc.port=8547   --p2p.static=/ip4/65.109.69.90/tcp/9003/p2p/16Uiu2HAmLiwieHqxRjjvPJtn5hSowjnkwRPExZQyNJgUEn8ZjBDj --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --rpc.enable-admin   --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645 --safedb.path=safedb --syncmode=execution-layer
+    ```
+
+---
 
 ## Beta Testnet
 
