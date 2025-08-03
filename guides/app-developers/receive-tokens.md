@@ -1,3 +1,41 @@
+## Gamma Testnet
+
+
+### Get Test QKC for Gamma Testnet On L1
+
+
+Steps:
+
+1. Ensure you have some sepolia gas, otherwise go [here](https://www.alchemy.com/faucets/ethereum-sepolia) for faucet.
+2. Invoke the `mint` function on etherscan [here](https://sepolia.etherscan.io/address/0xBf0b6e5C39d4afECB824305397729cd0493792E7#writeContract).
+
+Or simply run this:
+```bash
+export L1_RPC_URL='https://65.108.230.142:8545'
+export PRIVATE_KEY=''# input your own pk
+
+cast send 0xBf0b6e5C39d4afECB824305397729cd0493792E7 'mint()' --private-key $PRIVATE_KEY -r $L1_RPC_URL
+```
+
+After that you can cross the claimed `Test QKC` to L2 via [the migration page](https://migration.gamma.testnet.l2.quarkchain.io).
+
+### Get Gamma Testnet Soul Gas Token On L2
+
+```bash
+export SOUL_GAS_TOKEN=0x4200000000000000000000000000000000000800
+export L2_RPC_URL='https://rpc.gamma.testnet.l2.quarkchain.io:8545'
+export PRIVATE_KEY=''# input your own pk
+
+cast send --value <amount, e.g., 10ether> $SOUL_GAS_TOKEN 'deposit()' --private-key $PRIVATE_KEY -r $L2_RPC_URL
+```
+
+
+Then if you import `0x4200000000000000000000000000000000000800` into metamask, you'll see your balance of `Soul Gas Token`.
+
+### Faucet
+
+>Go to [https://qkc-l2-gamma-faucet.eth.sep.w3link.io](https://qkc-l2-gamma-faucet.eth.sep.w3link.io).
+
 ## Beta Testnet
 
 

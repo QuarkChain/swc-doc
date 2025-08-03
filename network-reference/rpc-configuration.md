@@ -1,3 +1,13 @@
+## Gamma Test
+
+```
+Bridge: https://bridge.gamma.testnet.l2.quarkchain.io
+Token Migration: https://migration.gamma.testnet.l2.quarkchain.io
+Faucet: https://qkc-l2-gamma-faucet.eth.sep.w3link.io
+Explorer：https://explorer.gamma.testnet.l2.quarkchain.io
+RPC: https://rpc.gamma.testnet.l2.quarkchain.io:8545
+```
+
 ## Beta Test
 
 ```

@@ -1,3 +1,8 @@
+## Gamma Testnet
+
+Visit [the bridge](https://bridge.gamma.testnet.l2.quarkchain.io/) and follow through the UI.
+
+
 ## Beta Testnet
 
 Visit [the bridge](https://bridge.beta.testnet.l2.quarkchain.io) and follow through the UI.
