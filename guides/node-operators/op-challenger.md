@@ -7,7 +7,7 @@ This guide provides a walkthrough of setting up the configuration and monitoring
 ### 1. Build the executable and prepare the prestate
 
 ```bash
-git clone -b op-es https://github.com/QuarkChain/optimism.git
+git clone -b gamma_testnet https://github.com/QuarkChain/optimism.git
 cd optimism && make op-challenger && make op-program && make cannon && make reproducible-prestate
 ```
 
