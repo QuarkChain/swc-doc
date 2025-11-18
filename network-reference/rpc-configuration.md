@@ -1,30 +1,9 @@
-## Gamma Test
+## Delta Test
 
 ```
-Bridge: https://bridge.gamma.testnet.l2.quarkchain.io
-Token Migration: https://migration.gamma.testnet.l2.quarkchain.io
-Faucet: https://qkc-l2-gamma-faucet.eth.sep.w3link.io
-Explorer：https://explorer.gamma.testnet.l2.quarkchain.io
-RPC: https://rpc.gamma.testnet.l2.quarkchain.io:8545
+Bridge: https://bridge.delta.testnet.l2.quarkchain.io
+Token Migration: https://migration.delta.testnet.l2.quarkchain.io
+Faucet: https://qkc-l2-delta-faucet.eth.sep.web3gateway.dev
+Explorer：https://explorer.delta.testnet.l2.quarkchain.io
+RPC: https://rpc.delta.testnet.l2.quarkchain.io:8545
 ```
-
-## Beta Test
-
-```
-Entrance: https://bridge.beta.testnet.l2.quarkchain.io
-Faucet: https://qkc-l2-faucet.eth.sep.w3link.io
-Explorer：https://explorer.beta.testnet.l2.quarkchain.io or http://5.9.87.214/
-RPC: https://rpc.beta.testnet.l2.quarkchain.io:8545 or http://5.9.87.214:8545
-```
-
-
-## Devnet
-
-```
-Explorer：http://142.132.154.16/
-RPC: http://142.132.154.16:8545
-Custom Gas Token: 0xe6ABD81D16a20606a661D4e075cdE5734AB62519
-Portal: 0xa3e462150c1b8c4eb4760d01bd8a96bc422c0067
-System Config: 0x7891508ac15aff02f7f8599c5594fe238382c879
-```
-
