@@ -63,7 +63,25 @@ For archive nodes, please add `--gcmode=archive` to `op-geth`.
         openssl rand -hex 32 > jwt.txt
 
         # The rpc port is the default one: 8545.
-        ./build/bin/geth   --datadir ./datadir   --http   --http.corsdomain="*"   --http.vhosts="*"   --http.addr=0.0.0.0   --http.api=web3,eth,txpool,net   --ws   --ws.addr=0.0.0.0   --ws.port=8546   --ws.origins="*"   --ws.api=eth,txpool,net  --networkid=110011   --authrpc.vhosts="*"   --authrpc.port=8551   --authrpc.jwtsecret=./jwt.txt   --rollup.disabletxpoolgossip --rollup.sequencerhttp=http://65.109.110.98:8545 --rollup.enabletxpooladmission --bootnodes enode://bca0a705e3ff2dd759724ed4b95a5ce01dc23c4fa0e208828cf275be77b7014dbad551e566cd557f56065e04d435800ae1223e5e060301ea8ad77b9714fc815f@65.109.110.98:30303
+        ./build/bin/geth --datadir ./datadir   \
+            --http \
+            --http.corsdomain="*" \
+            --http.vhosts="*" \
+            --http.addr=0.0.0.0 \
+            --http.api=web3,eth,txpool,net \
+            --ws \
+            --ws.addr=0.0.0.0 \
+            --ws.port=8546 \
+            --ws.origins="*" \
+            --ws.api=eth,txpool,net \
+            --networkid=110011 \
+            --authrpc.vhosts="*" \
+            --authrpc.port=8551 \
+            --authrpc.jwtsecret=./jwt.txt \
+            --rollup.disabletxpoolgossip \
+            --rollup.sequencerhttp=http://65.109.110.98:8545 \
+            --rollup.enabletxpooladmission \
+            --bootnodes enode://bca0a705e3ff2dd759724ed4b95a5ce01dc23c4fa0e208828cf275be77b7014dbad551e566cd557f56065e04d435800ae1223e5e060301ea8ad77b9714fc815f@65.109.110.98:30303 2>&1 | tee -a geth.log -i
     ```
 
 3. Setup `op-node`:
@@ -87,5 +105,23 @@ For archive nodes, please add `--gcmode=archive` to `op-geth`.
         mkdir safedb
         # Ensure to replace --p2p.static with the sequencer's address.
         # Note: p2p is enabled for unsafe block.
-        ./bin/op-node   --l2=http://localhost:8551   --l2.jwt-secret=./jwt.txt   --verifier.l1-confs=4   --rollup.config=./delta_testnet_rollup.json  --rpc.port=8547 --rpc.enable-admin --p2p.static=/ip4/65.109.110.98/tcp/9003/p2p/16Uiu2HAmUz5ueaopZhJP4VE3qDqFKSAyLdxq7aNPo3FiWMkj8Nze --p2p.listen.ip=0.0.0.0 --p2p.listen.tcp=9003 --p2p.listen.udp=9003  --p2p.no-discovery --p2p.sync.onlyreqtostatic --l1=$L1_RPC_URL   --l1.rpckind=$L1_RPC_KIND --l1.beacon=$L1_BEACON_URL --l1.beacon-archiver=http://65.108.236.27:9645 --l1.cache-size=0 --safedb.path=safedb --syncmode=execution-layer
+        ./bin/op-node --l2=http://localhost:8551 \
+            --l2.jwt-secret=./jwt.txt \
+            --verifier.l1-confs=4 \
+            --rollup.config=./delta_testnet_rollup.json \
+            --rpc.port=8547 \
+            --rpc.enable-admin \
+            --p2p.static=/ip4/65.109.110.98/tcp/9003/p2p/16Uiu2HAmUz5ueaopZhJP4VE3qDqFKSAyLdxq7aNPo3FiWMkj8Nze \
+            --p2p.listen.ip=0.0.0.0 \
+            --p2p.listen.tcp=9003 \
+            --p2p.listen.udp=9003 \
+            --p2p.no-discovery \
+            --p2p.sync.onlyreqtostatic \
+            --l1=$L1_RPC_URL \
+            --l1.rpckind=$L1_RPC_KIND \
+            --l1.beacon=$L1_BEACON_URL \
+            --l1.beacon-archiver=https://archive.testnet.ethstorage.io:9635 \
+            --l1.cache-size=0 \
+            --safedb.path=safedb \
+            --syncmode=execution-layer | tee -a node.log -i
     ```
