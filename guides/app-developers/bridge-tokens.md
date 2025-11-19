@@ -1,13 +1,3 @@
-## Gamma Testnet
+## Delta Testnet
 
-Visit [the bridge](https://bridge.gamma.testnet.l2.quarkchain.io/) and follow through the UI.
-
-
-## Beta Testnet
-
-Visit [the bridge](https://bridge.beta.testnet.l2.quarkchain.io) and follow through the UI.
-
-
-## Devnet
-
-Visit [the bridge](https://quarkchain-b1ac26e1bc5a3c1f.testnets.rollbridge.app/) and follow through the UI.
+Visit [the bridge](https://bridge.delta.testnet.l2.quarkchain.io/) and follow through the UI.
