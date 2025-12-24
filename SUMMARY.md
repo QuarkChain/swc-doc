@@ -17,13 +17,11 @@
 ## Guides
 
 * App Developers
-  * [Receive tokens](guides/app-developers/receive-tokens.md)
+  * [Receive test tokens](guides/app-developers/receive-tokens.md)
   * [Bridge tokens](guides/app-developers/bridge-tokens.md)
-  * [EthStorage Usage Guide](guides/app-developers/es-usage-guide.md)
 * Node Operators
   * [Run an Ethereum node](guides/node-operators/run-a-ethereum-node.md)
   * [Run a Super World Computer node](guides/node-operators/run-a-super-world-computer-node.md)
-  * [Run op-challenger](guides/node-operators/op-challenger.md)
 
 ## Network Reference
 
@@ -34,6 +32,7 @@
 
 * [`op-node` forkdiff](https://op-node.quarkchain.io/)
 * [`op-geth` forkdiff](https://op-geth.quarkchain.io/)
+* [`op-contract` forkdiff](https://op-contract.quarkchain.io/)
 
 ## Others
 
