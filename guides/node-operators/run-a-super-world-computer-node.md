@@ -6,7 +6,7 @@ This guide will help you get SWC node up and running.
 
 Hardware requirements for SWC nodes can vary depending on the type of node you plan to run. Archive nodes generally require significantly more resources than full nodes. Below are suggested minimum hardware requirements for each type of node.
 
-- 8GB RAM
+- 16 GB RAM
 - 300 GB SSD (full node) or 500 GB SSD (archive node)
 - Reasonably modern CPU
 
