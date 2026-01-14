@@ -30,13 +30,13 @@ For archive nodes, please add `--gcmode=archive` to `op-geth`.
 
  - 1.1 Download `op-geth`  
     ```bash
-    export VERSION=v1.0.0
+    export VERSION=v1.0.1
     curl -L "https://github.com/QuarkChain/op-geth/releases/download/${VERSION}/op-geth.${VERSION}.linux-amd64.tar.gz" \
       | tar -xz && mv "op-geth.${VERSION}" op-geth
     ```
 - 1.2 Download `op-node`
     ```bash
-    export VERSION=v1.0.0
+    export VERSION=v1.0.1
     curl -L "https://github.com/QuarkChain/optimism/releases/download/op-node%2F${VERSION}/op-node.${VERSION}.linux-amd64.tar.gz" \
       | tar -xz --strip-components=1 && mv "${VERSION}" op-node
     ```
